@@ -36,6 +36,10 @@ export default defineConfig(
 	{
 		// Override or add rule settings here, such as:
 		// 'svelte/button-has-type': 'error'
-		rules: {}
+		rules: {
+			// Los enlaces externos (wa.me) se construyen dinámicamente desde $lib/site;
+			// los internos son anclas de la misma página, así que resolve() no aplica.
+			'svelte/no-navigation-without-resolve': 'off'
+		}
 	}
 );

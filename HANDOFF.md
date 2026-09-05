@@ -4,15 +4,15 @@ This document transfers a completed **direction round** to the agent who will im
 
 ## State of the project
 
-| Artifact | Path | Status |
-|---|---|---|
-| Product truth | `PRODUCT.md` | ✅ Written (init complete) |
-| Surface brief + direction contract | `.impeccable/surfaces/src-routes-page-svelte.md` | ✅ Written, all 6 contract blocks + seed key present |
-| Build path config | `.impeccable/config.json` | ✅ `"buildPath": "comp"` |
-| Visual direction | Chosen: **Cevichería Menu** (seed key `d03aa789`, assigned candidate 5) | ✅ User-confirmed |
-| Code | `src/routes/+page.svelte` | ❌ Still SvelteKit scaffold placeholder |
-| Approved comp | — | ❌ None yet (comp round happens during build) |
-| DESIGN.md | — | ❌ Written at finish by the documenter, never before the build |
+| Artifact                           | Path                                                                    | Status                                                         |
+| ---------------------------------- | ----------------------------------------------------------------------- | -------------------------------------------------------------- |
+| Product truth                      | `PRODUCT.md`                                                            | ✅ Written (init complete)                                     |
+| Surface brief + direction contract | `.impeccable/surfaces/src-routes-page-svelte.md`                        | ✅ Written, all 6 contract blocks + seed key present           |
+| Build path config                  | `.impeccable/config.json`                                               | ✅ `"buildPath": "comp"`                                       |
+| Visual direction                   | Chosen: **Cevichería Menu** (seed key `d03aa789`, assigned candidate 5) | ✅ User-confirmed                                              |
+| Code                               | `src/routes/+page.svelte`                                               | ❌ Still SvelteKit scaffold placeholder                        |
+| Approved comp                      | —                                                                       | ❌ None yet (comp round happens during build)                  |
+| DESIGN.md                          | —                                                                       | ❌ Written at finish by the documenter, never before the build |
 
 ## The chosen direction (summary — authority is the surface brief)
 

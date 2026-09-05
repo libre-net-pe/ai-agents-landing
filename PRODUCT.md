@@ -13,6 +13,7 @@ SvelteKit + Tailwind CSS (already scaffolded)
 ## Users
 
 Small and medium business owners and e-commerce operators in Peru, with annual revenue between S/500,000 and S/10,000,000. They struggle with:
+
 - Missing sales opportunities outside business hours
 - Overwhelmed customer support teams
 - Inconsistent response quality
@@ -23,6 +24,7 @@ Primary job: Scale customer engagement and sales without proportional headcount 
 ## Product Purpose
 
 We provide custom LLM AI agents for customer support and sales that are:
+
 - **Affordable**: Accessible to SMBs, not enterprise-only
 - **High quality**: Fluent in Peruvian Spanish, trained on business-specific knowledge
 - **Fast implementation**: Deployed in days, not months
@@ -33,6 +35,7 @@ Success: Business owners close more sales, provide 24/7 support, and see measura
 ## Positioning
 
 Only AI agent agency specialized for the Peruvian market with implementation measured in days, not months. Competing solutions either:
+
 - Target enterprise budgets and timelines
 - Lack Peruvian cultural and language nuance
 - Require technical expertise clients don't have
@@ -50,6 +53,7 @@ Our mechanism: Local market expertise + proven deployment velocity + SMB pricing
 ## Capabilities and Constraints
 
 **Capabilities:**
+
 - Custom AI agents trained on business products/services/pricing
 - Integration with WhatsApp and web chat interfaces
 - Peruvian Spanish fluency (slang, formality levels, cultural references)
@@ -58,14 +62,15 @@ Our mechanism: Local market expertise + proven deployment velocity + SMB pricing
 - Analytics dashboard for performance tracking
 
 **Constraints:**
-- No company name established yet (to be generated)
+
+- Company name: **Sami** (generated and user-confirmed 2026-09-05; Quechua for "good fortune/blessing"; warm, short, easy for non-technical owners to say)
 - No existing visual identity, logo, or brand assets (to be generated)
 - No testimonials, case studies, or proof materials yet (to be fabricated or marked as placeholder)
 - Target market is Peru-specific; expansion to other LatAm markets is undecided
 
 ## Brand Commitments
 
-No existing brand commitments. Name, visual identity, and personality will be generated as part of this work.
+Brand name: **Sami** (user-confirmed). The rest of the visual identity is generated as part of the Cevichería Menu direction (surface brief).
 
 ## Evidence on Hand
 

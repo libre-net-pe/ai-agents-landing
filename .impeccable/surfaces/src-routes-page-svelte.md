@@ -1,7 +1,7 @@
 ---
 version: 1
-slug: "src-routes-page-svelte"
-primary_target: "src/routes/+page.svelte"
+slug: 'src-routes-page-svelte'
+primary_target: 'src/routes/+page.svelte'
 related_targets: []
 ---
 
@@ -46,6 +46,7 @@ FINISH: unreviewed and undocumented is unfinished; this build ends with the fini
 
 ## Unresolved Decisions
 
-- Company name: none exists yet — generate during build; must feel Peruvian and credible.
+- Company name: **Sami** — generated and user-confirmed in chat (Quechua for "good fortune"); candidates were Chasqui, Sami, Ají.
+- Build path: code-led (no image generation available in the build session; user confirmed in chat). Comp round force-closed at 0 comps; FIRST VIEWPORT block is the binding spec.
 - Placeholder testimonials/case studies: to be authored as clearly-labeled synthetic content; the owner supplies real ones later.
 - Final pricing presentation: "affordable" framing only, no invented figures.

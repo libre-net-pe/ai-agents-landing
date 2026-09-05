@@ -1,3 +1,346 @@
 @import 'tailwindcss';
 @plugin '@tailwindcss/forms';
 @plugin '@tailwindcss/typography';
+
+/*
+ * Sami — mundo visual "Cevichería Menu".
+ * Plato de cerámica blanco; titular tomate (ají); lima y azul marino de acento;
+ * carbón para el cuerpo; verde WhatsApp para las acciones primarias.
+ */
+
+@theme {
+	--color-plate: #fffdf8; /* plato de cerámica, blanco cálido */
+	--color-carbon: #2b2622; /* cuerpo de texto */
+	--color-aji: #c22a18; /* tomate (ají), texto y titulares */
+	--color-aji-deep: #a02010; /* tomate, hover */
+	--color-aji-soft: #fbe3dd; /* tomate, fondos suaves */
+	--color-lima: #a9cc4e; /* verde lima, relleno */
+	--color-lima-soft: #ecf5d4; /* lima, fondo suave */
+	--color-mar: #0c6da0; /* azul marino del Pacífico, texto */
+	--color-mar-soft: #dceef8; /* azul, fondo suave */
+	--color-wsp: #0b7a3e; /* verde WhatsApp profundo, botones */
+	--color-wsp-deep: #096632; /* verde WhatsApp, hover */
+	--color-wsp-bright: #25d366; /* verde WhatsApp vivo, anillos y burbujas */
+	--color-wsp-soft: #d9f7e7; /* burbuja saliente estilo WhatsApp */
+
+	--font-display: 'Passion One', 'Arial Narrow', sans-serif;
+	--font-body: 'Hanken Grotesk', 'Segoe UI', sans-serif;
+	--font-hand: 'Caveat', cursive;
+
+	--shadow-menu: 0 10px 30px -8px rgb(43 38 34 / 0.18), 0 2px 8px -2px rgb(43 38 34 / 0.1);
+}
+
+@layer base {
+	html {
+		scroll-behavior: smooth;
+	}
+
+	body {
+		background-color: var(--color-plate);
+		color: var(--color-carbon);
+		font-family: var(--font-body);
+		font-size: 1.0625rem;
+		line-height: 1.65;
+		-webkit-font-smoothing: antialiased;
+		text-rendering: optimizeLegibility;
+	}
+
+	::selection {
+		background-color: var(--color-lima);
+		color: var(--color-carbon);
+	}
+
+	:focus-visible {
+		outline: 3px solid var(--color-aji);
+		outline-offset: 2px;
+		border-radius: 2px;
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		html {
+			scroll-behavior: auto;
+		}
+
+		*,
+		*::before,
+		*::after {
+			animation-duration: 0.01ms !important;
+			animation-iteration-count: 1 !important;
+			transition-duration: 0.01ms !important;
+		}
+	}
+}
+
+/* ---------- Piezas del mundo carta ---------- */
+
+/* Puntos de menú entre el nombre del plato y el precio/chip */
+.leader-line {
+	border-top: 3px dotted rgb(43 38 34 / 0.28);
+	transform: translateY(-4px);
+}
+
+/* Chip de bloque de color, como precio de carta */
+.chip {
+	display: inline-flex;
+	align-items: center;
+	white-space: nowrap;
+	border-radius: 0.5rem;
+	padding: 0.2rem 0.6rem;
+	font-size: 0.8125rem;
+	font-weight: 800;
+	line-height: 1.3;
+	letter-spacing: 0.01em;
+}
+
+.chip-tilt:nth-child(odd) {
+	transform: rotate(-1.2deg);
+}
+
+.chip-tilt:nth-child(even) {
+	transform: rotate(1deg);
+}
+
+/* Botón primario WhatsApp */
+.btn-wsp {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	gap: 0.625rem;
+	border-radius: 999px;
+	background-color: var(--color-wsp);
+	color: #ffffff;
+	font-weight: 800;
+	letter-spacing: 0.01em;
+	padding: 0.9rem 1.75rem;
+	box-shadow:
+		0 12px 24px -8px rgb(11 122 62 / 0.45),
+		0 2px 6px -2px rgb(43 38 34 / 0.18);
+	transition:
+		background-color 180ms cubic-bezier(0.22, 1, 0.36, 1),
+		transform 180ms cubic-bezier(0.22, 1, 0.36, 1),
+		box-shadow 180ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.btn-wsp:hover {
+	background-color: var(--color-wsp-deep);
+	transform: translateY(-2px);
+	box-shadow:
+		0 16px 28px -8px rgb(11 122 62 / 0.5),
+		0 3px 8px -2px rgb(43 38 34 / 0.2);
+}
+
+.btn-wsp:active {
+	transform: translateY(0);
+}
+
+/* Pulso del botón firma (anillo verde que se expande) */
+@keyframes pulse-ring {
+	0% {
+		box-shadow:
+			0 0 0 0 rgb(37 211 102 / 0.5),
+			0 12px 24px -8px rgb(11 122 62 / 0.45);
+	}
+	70% {
+		box-shadow:
+			0 0 0 16px rgb(37 211 102 / 0),
+			0 12px 24px -8px rgb(11 122 62 / 0.45);
+	}
+	100% {
+		box-shadow:
+			0 0 0 0 rgb(37 211 102 / 0),
+			0 12px 24px -8px rgb(11 122 62 / 0.45);
+	}
+}
+
+.pulse-wsp {
+	animation: pulse-ring 2.2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+/* Entrada al hacer scroll (usar con la acción `reveal`) */
+.will-reveal {
+	opacity: 0;
+	transform: translateY(18px);
+	filter: blur(2px);
+}
+
+.is-revealed {
+	opacity: 1;
+	transform: translateY(0);
+	filter: blur(0);
+	transition:
+		opacity 650ms cubic-bezier(0.16, 1, 0.3, 1),
+		transform 650ms cubic-bezier(0.16, 1, 0.3, 1),
+		filter 650ms cubic-bezier(0.16, 1, 0.3, 1);
+	transition-delay: var(--reveal-delay, 0ms);
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.will-reveal {
+		opacity: 1;
+		transform: none;
+		filter: none;
+	}
+}
+
+/* ---------- Tarjeta de chat flotante (interacción firma) ---------- */
+
+.chat-card {
+	position: fixed;
+	right: 1rem;
+	bottom: 6.5rem;
+	z-index: 50;
+	width: min(20.5rem, calc(100vw - 2rem));
+	border-radius: 1rem;
+	background-color: var(--color-plate);
+	box-shadow:
+		0 24px 48px -12px rgb(43 38 34 / 0.35),
+		0 4px 12px -4px rgb(43 38 34 / 0.2);
+	overflow: hidden;
+	animation: chat-in 500ms cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@keyframes chat-in {
+	from {
+		opacity: 0;
+		transform: translateY(20px) scale(0.92);
+	}
+	to {
+		opacity: 1;
+		transform: translateY(0) scale(1);
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.chat-card {
+		animation: none;
+	}
+}
+
+.chat-head {
+	display: flex;
+	align-items: center;
+	gap: 0.625rem;
+	background-color: var(--color-mar);
+	padding: 0.625rem 0.75rem;
+}
+
+.chat-avatar {
+	display: grid;
+	place-items: center;
+	width: 2.125rem;
+	height: 2.125rem;
+	border-radius: 999px;
+	background-color: var(--color-aji);
+	color: #ffffff;
+	font-family: var(--font-display);
+	font-size: 1.25rem;
+	font-weight: 700;
+	line-height: 1;
+	padding-bottom: 2px;
+}
+
+.chat-body {
+	display: flex;
+	flex-direction: column;
+	gap: 0.5rem;
+	padding: 0.875rem;
+}
+
+/* Burbuja entrante estilo WhatsApp */
+.chat-in {
+	align-self: flex-start;
+	max-width: 85%;
+	border-radius: 0.9rem 0.9rem 0.9rem 0.25rem;
+	background-color: #f1ede5;
+	color: var(--color-carbon);
+	font-size: 0.9rem;
+	line-height: 1.45;
+	padding: 0.5rem 0.75rem;
+	animation: bubble-in 320ms cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@keyframes bubble-in {
+	from {
+		opacity: 0;
+		transform: translateY(8px) scale(0.96);
+	}
+	to {
+		opacity: 1;
+		transform: translateY(0) scale(1);
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.chat-in {
+		animation: none;
+	}
+}
+
+.chat-foot {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 0.5rem;
+	border-top: 2px dotted rgb(43 38 34 / 0.2);
+	padding: 0.625rem 0.875rem;
+}
+
+/* Burbujas de la conversación de la pizarra */
+.bubble-client {
+	align-self: flex-start;
+	max-width: 85%;
+	border-radius: 0.9rem 0.9rem 0.9rem 0.25rem;
+	background-color: #f1ede5;
+	color: var(--color-carbon);
+	font-size: 0.9375rem;
+	line-height: 1.5;
+	padding: 0.5625rem 0.875rem;
+}
+
+.bubble-agent {
+	align-self: flex-end;
+	max-width: 85%;
+	border-radius: 0.9rem 0.9rem 0.25rem 0.9rem;
+	background-color: var(--color-wsp-soft);
+	color: var(--color-carbon);
+	font-size: 0.9375rem;
+	line-height: 1.5;
+	padding: 0.5625rem 0.875rem;
+}
+
+/* Indicador de "está escribiendo" */
+.typing-dot {
+	display: inline-block;
+	width: 0.375rem;
+	height: 0.375rem;
+	border-radius: 999px;
+	background-color: rgb(43 38 34 / 0.4);
+	animation: typing 1.2s ease-in-out infinite;
+}
+
+.typing-dot:nth-child(2) {
+	animation-delay: 150ms;
+}
+
+.typing-dot:nth-child(3) {
+	animation-delay: 300ms;
+}
+
+@keyframes typing {
+	0%,
+	60%,
+	100% {
+		transform: translateY(0);
+		opacity: 0.5;
+	}
+	30% {
+		transform: translateY(-3px);
+		opacity: 1;
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.typing-dot {
+		animation: none;
+	}
+}

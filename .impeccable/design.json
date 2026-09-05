@@ -1,0 +1,164 @@
+{
+	"schemaVersion": 2,
+	"generatedAt": "2026-09-05T12:40:00.000Z",
+	"title": "Design System: Sami",
+	"extensions": {
+		"colorMeta": {
+			"plate": { "role": "neutral", "displayName": "Plato de cerámica", "canonical": "#FFFDF8" },
+			"carbon": { "role": "neutral", "displayName": "Carbón", "canonical": "#2B2622" },
+			"aji": { "role": "primary", "displayName": "Ají (tomate)", "canonical": "#C22A18" },
+			"lima": { "role": "secondary", "displayName": "Lima", "canonical": "#A9CC4E" },
+			"mar": { "role": "secondary", "displayName": "Mar del Pacífico", "canonical": "#0C6DA0" },
+			"wsp": {
+				"role": "tertiary",
+				"displayName": "Verde WhatsApp profundo",
+				"canonical": "#0B7A3E"
+			}
+		},
+		"typographyMeta": {
+			"display": {
+				"displayName": "Display",
+				"purpose": "Titular del hero y cierre rojo; tope 6rem."
+			},
+			"headline": { "displayName": "Headline", "purpose": "Títulos de sección en ají o blanco." },
+			"course": { "displayName": "Course", "purpose": "Cabeceras de curso en mar, mayúsculas." },
+			"body": { "displayName": "Body", "purpose": "Párrafos y filas de carta; máx 60–65ch." },
+			"hand": { "displayName": "Tiza (Caveat)", "purpose": "Garnice de pizarra; nunca kickers." }
+		},
+		"shadows": [
+			{
+				"name": "menu",
+				"value": "0 10px 30px -8px rgb(43 38 34 / 0.18), 0 2px 8px -2px rgb(43 38 34 / 0.1)",
+				"purpose": "Tarjetas de chat y FAB flotante."
+			},
+			{
+				"name": "boton-wsp",
+				"value": "0 12px 24px -8px rgb(11 122 62 / 0.45), 0 2px 6px -2px rgb(43 38 34 / 0.18)",
+				"purpose": "Botón primario WhatsApp; crece en hover."
+			}
+		],
+		"motion": [
+			{
+				"name": "ease-expo",
+				"value": "cubic-bezier(0.16, 1, 0.3, 1)",
+				"purpose": "Entradas de scroll, tarjeta de chat y burbujas; 320–650ms."
+			},
+			{
+				"name": "pulse-wsp",
+				"value": "box-shadow 0 0 0 0 → 0 0 0 16px rgb(37 211 102 / 0), 2.2s cubic-bezier(0.4, 0, 0.6, 1) infinite",
+				"purpose": "Firma de la casa: pulso del botón WhatsApp."
+			},
+			{
+				"name": "reduced-motion",
+				"value": "prefers-reduced-motion: reduce → animaciones y transiciones a 0.01ms; reveals y chat aparecen sin transformación",
+				"purpose": "Accesibilidad de movimiento."
+			}
+		],
+		"breakpoints": [
+			{ "name": "sm", "value": "640px" },
+			{ "name": "md", "value": "768px" }
+		]
+	},
+	"components": [
+		{
+			"name": "Botón WhatsApp primario",
+			"kind": "button",
+			"refersTo": "button-primary",
+			"description": "Píldora verde profundo con glifo WhatsApp; toda acción primaria del mundo.",
+			"html": "<a class=\"ds-btn-wsp\" href=\"#\"><svg class=\"ds-ico\" viewBox=\"0 0 24 24\" fill=\"currentColor\" aria-hidden=\"true\"><path d=\"M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z\"/></svg><span>Pide el tuyo por WhatsApp</span></a>",
+			"css": ".ds-btn-wsp{display:inline-flex;align-items:center;justify-content:center;gap:.625rem;border-radius:999px;background-color:#0B7A3E;color:#fff;font-weight:800;padding:.9rem 1.75rem;box-shadow:0 12px 24px -8px rgb(11 122 62/.45),0 2px 6px -2px rgb(43 38 34/.18);transition:background-color 180ms cubic-bezier(.22,1,.36,1),transform 180ms cubic-bezier(.22,1,.36,1)}.ds-btn-wsp:hover{background-color:#096632;transform:translateY(-2px)}.ds-btn-wsp:focus-visible{outline:3px solid #C22A18;outline-offset:2px}.ds-ico{width:20px;height:20px;flex-shrink:0}"
+		},
+		{
+			"name": "Chip de carta",
+			"kind": "chip",
+			"refersTo": "chip",
+			"description": "Bloque de color sólido con inclinación alterna, como precio puesto a mano.",
+			"html": "<span class=\"ds-chip ds-chip--lima\">24/7</span> <span class=\"ds-chip ds-chip--mar\">Al instante</span> <span class=\"ds-chip ds-chip--aji\">Con sazón</span>",
+			"css": ".ds-chip{display:inline-flex;align-items:center;border-radius:8px;padding:.2rem .6rem;font-size:13px;font-weight:800;line-height:1.3}.ds-chip--lima{background:#A9CC4E;color:#2B2622;transform:rotate(-1.2deg)}.ds-chip--mar{background:#0C6DA0;color:#fff;transform:rotate(1deg)}.ds-chip--aji{background:#C22A18;color:#fff;transform:rotate(-1.2deg)}"
+		},
+		{
+			"name": "Fila de menú",
+			"kind": "custom",
+			"refersTo": "chip",
+			"description": "Firma del sistema: nombre, líder punteado y chip; en móvil se parte en dos líneas.",
+			"html": "<div class=\"ds-row\"><span class=\"ds-row-name\">Toma los pedidos y las reservas</span><span class=\"ds-row-leader\"></span><span class=\"ds-chip ds-chip--lima\">24/7</span></div>",
+			"css": ".ds-row{display:flex;flex-wrap:wrap;align-items:baseline;column-gap:12px;row-gap:4px;font-family:'Hanken Grotesk',sans-serif}.ds-row-name{width:100%;font-weight:700;color:#2B2622}.ds-row-leader{flex:1;min-width:24px;border-top:3px dotted rgb(43 38 34/.28);transform:translateY(-4px)}@media(min-width:640px){.ds-row-name{width:auto}}.ds-chip{display:inline-flex;border-radius:8px;padding:.2rem .6rem;font-size:13px;font-weight:800}.ds-chip--lima{background:#A9CC4E;color:#2B2622}"
+		},
+		{
+			"name": "Burbujas de chat",
+			"kind": "custom",
+			"refersTo": "card",
+			"description": "Par cliente/agente estilo WhatsApp; agente siempre en verde suave con cola a la derecha.",
+			"html": "<div class=\"ds-thread\"><p class=\"ds-bub ds-bub--client\">Buenas, ¿hacen delivery hoy?</p><p class=\"ds-bub ds-bub--agent\">¡Buenas! Sí, hoy atendemos hasta las 10 pm. ¿Para qué zona sería?</p></div>",
+			"css": ".ds-thread{display:flex;flex-direction:column;gap:10px;padding:16px;background:#FFFDF8;border-radius:16px}.ds-bub{max-width:85%;border-radius:14px;padding:.5625rem .875rem;font-size:15px;line-height:1.5;color:#2B2622;font-family:'Hanken Grotesk',sans-serif}.ds-bub--client{align-self:flex-start;background:#F1EDE5;border-bottom-left-radius:4px}.ds-bub--agent{align-self:flex-end;background:#D9F7E7;border-bottom-right-radius:4px}"
+		},
+		{
+			"name": "Cabecera de curso",
+			"kind": "custom",
+			"refersTo": "course",
+			"description": "Cabecera de grupo de carta: curso en mar mayúsculas, líder punteado y tag a mano en ají.",
+			"html": "<div class=\"ds-course\"><h3 class=\"ds-course-title\">Cebiches</h3><span class=\"ds-course-leader\"></span><span class=\"ds-course-tag\">al instante, fresquito</span></div>",
+			"css": ".ds-course{display:flex;align-items:baseline;gap:12px;font-family:'Hanken Grotesk',sans-serif}.ds-course-title{font-family:'Passion One',sans-serif;font-weight:700;font-size:1.5rem;letter-spacing:.025em;text-transform:uppercase;color:#0C6DA0;line-height:1.2}.ds-course-leader{flex:1;border-top:3px dotted rgb(43 38 34/.28);transform:translateY(-4px)}.ds-course-tag{font-family:'Caveat',cursive;font-weight:600;font-size:1.5rem;color:#C22A18}"
+		},
+		{
+			"name": "Navegación masthead",
+			"kind": "nav",
+			"refersTo": "button-primary",
+			"description": "Sticky sobre plato con blur y regla sólida de 3px carbón; wordmark ají con punto lima.",
+			"html": "<header class=\"ds-nav\"><a class=\"ds-brand\" href=\"#\">Sami<span class=\"ds-dot\"></span></a><nav class=\"ds-links\"><a href=\"#\">La carta</a><a href=\"#\">Cómo funciona</a><a href=\"#\">Preguntas</a></nav></header>",
+			"css": ".ds-nav{position:sticky;top:0;display:flex;align-items:center;gap:24px;height:64px;padding:0 20px;background:rgb(255 253 248/.95);backdrop-filter:blur(4px);border-bottom:3px solid rgb(43 38 34/.9);font-family:'Hanken Grotesk',sans-serif}.ds-brand{font-family:'Passion One',sans-serif;font-weight:700;font-size:1.875rem;line-height:1;color:#C22A18;text-decoration:none}.ds-dot{display:inline-block;width:8px;height:8px;margin-left:4px;border-radius:999px;background:#A9CC4E}.ds-links{margin-left:auto;display:flex;gap:24px}.ds-links a{font-size:14px;font-weight:800;color:#2B2622;text-decoration:none}.ds-links a:hover{color:#C22A18}"
+		},
+		{
+			"name": "Divisor de ají",
+			"kind": "custom",
+			"refersTo": "chip",
+			"description": "Separador de sección: líder punteado con ají SVG al centro.",
+			"html": "<div class=\"ds-chili\" aria-hidden=\"true\"><span class=\"ds-chili-line\"></span><svg class=\"ds-chili-ico\" viewBox=\"0 0 512 512\" fill=\"currentColor\"><path d=\"M446.738 28.814c-25.117 13.687-48.889 42.68-61.957 71.809c-7.818-2.893-16.676-4.618-25.513-4.545c-14.73.121-29.385 5.227-39.008 18.168c.886.005 1.774.018 2.666.05c12.22.443 24.958 3.41 37.304 8.102c22.98 8.734 45.207 23.286 58.29 41.83c12.723-30.603-.83-45.203-17.569-55.43c11.733-25.618 34.789-53.49 54.4-64.177zM319.824 132.261a59 59 0 0 0-6.894.35c-11.725 1.322-19.854 5.705-24.686 14.477c-45.314 82.267-40.39 117.237-53.092 156.177c-6.35 19.47-17.347 39.092-40.322 63.21c-22.975 24.116-57.954 53.12-113.379 93.007c-12.743 9.171-20.766 16.8-24.03 21.39c-.686.967-.496.828-.773 1.417c2.1.465 6.218 1.262 13.534.709c9.923-.751 23.7-3.263 40.53-7.672c85.471-22.392 164.479-75.553 220.118-132.317c27.82-28.381 49.794-57.658 63.861-84.048s19.84-49.872 17.239-65.627c-3.273-19.817-29.295-43.162-58.096-54.11c-10.8-4.105-21.814-6.517-31.592-6.908a70 70 0 0 0-2.418-.055m1.977 17.813c1.725.06 3.385.555 4.967 1.533c-22.945 39.64-46.91 81.1-60.47 138.438c-22.95-11.989 25.686-141.007 55.503-139.971\"/></svg><span class=\"ds-chili-line\"></span></div>",
+			"css": ".ds-chili{display:flex;align-items:center;gap:16px}.ds-chili-line{flex:1;border-top:3px dotted rgb(43 38 34/.28)}.ds-chili-ico{width:20px;height:20px;flex-shrink:0;color:#C22A18}"
+		}
+	],
+	"narrative": {
+		"northStar": "La carta de la cevichería que nunca cierra",
+		"overview": "Sami se viste con la gramática de una carta de cevichería peruana: plato de cerámica blanco, titulares en tomate (ají), puntos de menú entre el plato y su precio, ajíes como separadores y un verde WhatsApp que manda en toda acción. La página no explica tecnología, toma el pedido; rechaza el molde SaaS de hero + tres tarjetas + tabla de precios con una sola columna de carta centrada en cursos. La densidad es de menú bien editado, con un solo pasaje oscuro — la pizarra — y movimiento de servicio: pulso del botón WhatsApp, chat que aparece solo a los 3 segundos y entradas con ease-out exponencial, todo apagado bajo prefers-reduced-motion.",
+		"keyCharacteristics": [
+			"Filas de menú: nombre en negrita, línea punteada de 3px, chip de bloque inclinado",
+			"Una sola acción primaria: botón verde WhatsApp profundo con pulso",
+			"Notas a mano (Caveat) como garnice, nunca kickers",
+			"Español peruano de Lima en todo el copy"
+		],
+		"rules": [
+			{
+				"name": "La Regla de un Solo Plato",
+				"body": "El fondo es cerámica blanca en toda la página; el carbón oscuro solo aparece dos veces — la pizarra y el footer.",
+				"section": "colors"
+			},
+			{
+				"name": "La Regla del Mozo",
+				"body": "Toda acción primaria es un botón verde WhatsApp; no existen formularios ni botones de otro color.",
+				"section": "colors"
+			},
+			{
+				"name": "La Regla de la Tiza",
+				"body": "La Caveat es garnice de pizarra: acompaña, no etiqueta. Nada de kickers sobre títulos.",
+				"section": "typography"
+			},
+			{
+				"name": "La Regla del Plato Llano",
+				"body": "Lo servido en la carta va plano; solo flota lo que el mozo trae (chat, botones).",
+				"section": "elevation"
+			}
+		],
+		"dos": [
+			"Do usar Passion One 700 en titulares con clamp y nunca pasar de 6rem.",
+			"Do alternar chips lima→mar→ají en cada lista para el ritmo de bloque de color.",
+			"Do escribir todo el copy en español peruano de Lima; CTA con verbo de pedido.",
+			"Do etiquetar conversaciones y testimonios sintéticos con chip visible."
+		],
+		"donts": [
+			"Don't inventar precios, cifras ni clientes: el precio se encuadra, nunca se cifra.",
+			"Don't usar kickers, texto en degradado, sombras duras sin blur ni emojis como sistema de íconos.",
+			"Don't poner texto blanco sobre #25D366; el verde de botón es #0B7A3E.",
+			"Don't romper la columna de carta con retículas de tarjetas SaaS ni glassmorphism."
+		]
+	}
+}

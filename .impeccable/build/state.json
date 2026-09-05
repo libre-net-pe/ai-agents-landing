@@ -1,0 +1,168 @@
+{
+	"tool": "build-phase",
+	"version": 2,
+	"startedAt": "2026-09-05T12:01:39.021Z",
+	"comp": null,
+	"direction": "d03aa789",
+	"breakpoint": null,
+	"artifact": null,
+	"phase": "review",
+	"phases": {
+		"comps": {
+			"status": "closed",
+			"openedAt": "2026-09-05T12:01:39.021Z",
+			"closedAt": "2026-09-05T12:05:55.769Z",
+			"attempts": 4,
+			"notes": [],
+			"gate": {
+				"ok": false,
+				"reasons": [
+					"0 comps under .impeccable/mocks; the comp round puts three compositional options of the chosen direction in front of the user (reference/visualize.md). Generate the missing ones (harness image tool or generate-image.mjs), each with a .json sidecar holding its prompt.",
+					"no comp is approved: put the three comps in front of the user (decision page via serve-question.mjs, or the structured question tool), then set \"approved\": true in the chosen comp's sidecar. A delegated pick is recorded the same way and disclosed."
+				],
+				"summary": "0 comps, 0 approved",
+				"at": "2026-09-05T12:05:55.764Z"
+			},
+			"forced": {
+				"at": "2026-09-05T12:05:55.769Z",
+				"reason": "User, asked how to proceed given no image generation is available, chose to downgrade the comp: \"Lets do code-led.\"",
+				"reasons": [
+					"0 comps under .impeccable/mocks; the comp round puts three compositional options of the chosen direction in front of the user (reference/visualize.md). Generate the missing ones (harness image tool or generate-image.mjs), each with a .json sidecar holding its prompt.",
+					"no comp is approved: put the three comps in front of the user (decision page via serve-question.mjs, or the structured question tool), then set \"approved\": true in the chosen comp's sidecar. A delegated pick is recorded the same way and disclosed."
+				]
+			}
+		},
+		"spec": {
+			"status": "closed",
+			"openedAt": "2026-09-05T12:05:55.769Z",
+			"closedAt": "2026-09-05T12:16:42.516Z",
+			"attempts": 3,
+			"notes": [
+				{
+					"at": "2026-09-05T12:06:09.020Z",
+					"text": "CODE-LED BUILD: no image generation available in this session (no OPENAI_API_KEY, no harness-native image tool). User chose code-led in chat (\"Let's do code-led\"). Comps gate force-closed with 0 comps. No comp exists; spec/plates gates cannot measure against a comp. Build proceeds from the direction contract's FIRST VIEWPORT block in .impeccable/surfaces/src-routes-page-svelte.md; finish reviewer audits promises in behavior."
+				}
+			],
+			"gate": {
+				"ok": false,
+				"reasons": [
+					"no spec at .impeccable/build/spec.json: run comp-spec.mjs --comp  --grid, name the regions, then --regions regions.json"
+				],
+				"at": "2026-09-05T12:16:42.506Z"
+			},
+			"forced": {
+				"at": "2026-09-05T12:16:42.516Z",
+				"reason": "User, asked how to proceed given no image generation is available, chose to downgrade the comp: \"Let's do code-led.\"",
+				"reasons": [
+					"no spec at .impeccable/build/spec.json: run comp-spec.mjs --comp  --grid, name the regions, then --regions regions.json"
+				]
+			}
+		},
+		"plates": {
+			"status": "closed",
+			"openedAt": "2026-09-05T12:16:42.516Z",
+			"closedAt": "2026-09-05T12:16:42.529Z",
+			"attempts": 1,
+			"notes": [],
+			"gate": {
+				"ok": false,
+				"reasons": ["no spec"],
+				"at": "2026-09-05T12:16:42.519Z"
+			},
+			"forced": {
+				"at": "2026-09-05T12:16:42.529Z",
+				"reason": "User, asked how to proceed given no image generation is available, chose to downgrade the comp: \"Let's do code-led.\"",
+				"reasons": ["no spec"]
+			}
+		},
+		"hero": {
+			"status": "closed",
+			"openedAt": "2026-09-05T12:16:42.529Z",
+			"closedAt": "2026-09-05T12:16:42.544Z",
+			"attempts": 1,
+			"notes": [],
+			"gate": {
+				"ok": false,
+				"reasons": [
+					"no hero capture at .impeccable/review/hero-repro.png: screenshot the first viewport at the comp's own dimensions (comp size) into that path"
+				],
+				"at": "2026-09-05T12:16:42.535Z"
+			},
+			"forced": {
+				"at": "2026-09-05T12:16:42.544Z",
+				"reason": "User, asked how to proceed given no image generation is available, chose to downgrade the comp: \"Let's do code-led.\"",
+				"reasons": [
+					"no hero capture at .impeccable/review/hero-repro.png: screenshot the first viewport at the comp's own dimensions (comp size) into that path"
+				]
+			}
+		},
+		"sections": {
+			"status": "closed",
+			"openedAt": "2026-09-05T12:16:42.544Z",
+			"closedAt": "2026-09-05T12:25:56.519Z",
+			"attempts": 1,
+			"notes": [],
+			"gate": {
+				"ok": true,
+				"reasons": [],
+				"summary": "no mechanical gate",
+				"at": "2026-09-05T12:25:56.519Z"
+			},
+			"forced": null
+		},
+		"motion": {
+			"status": "closed",
+			"openedAt": "2026-09-05T12:25:56.519Z",
+			"closedAt": "2026-09-05T12:25:56.526Z",
+			"attempts": 1,
+			"notes": [
+				{
+					"at": "2026-09-05T12:25:56.523Z",
+					"text": "Motion authored as one orchestrated grammar in src/routes/layout.css: signature WhatsApp pulse-ring on both primary CTAs, chat-card entrance (signature interaction, 3s delay in ChatPreview.svelte), scroll reveals via reveal action (exponential ease-out, staggered), typing dots; all disabled under prefers-reduced-motion."
+				}
+			],
+			"gate": {
+				"ok": true,
+				"reasons": [],
+				"summary": "no mechanical gate",
+				"at": "2026-09-05T12:25:56.526Z"
+			},
+			"forced": null
+		},
+		"responsive": {
+			"status": "closed",
+			"openedAt": "2026-09-05T12:25:56.526Z",
+			"closedAt": "2026-09-05T12:34:14.108Z",
+			"attempts": 2,
+			"notes": [],
+			"gate": {
+				"ok": false,
+				"reasons": [
+					"comp-diff failed on .impeccable/review/desktop.png: png: \"/home/paseo/.paseo/worktrees/34e3h4uo/witty-duck/\": Is a directory (os error 21)"
+				],
+				"at": "2026-09-05T12:34:14.099Z"
+			},
+			"forced": {
+				"at": "2026-09-05T12:34:14.108Z",
+				"reason": "User, asked how to proceed given no image generation is available, chose to downgrade the comp: \"Let's do code-led.\"",
+				"reasons": [
+					"comp-diff failed on .impeccable/review/desktop.png: png: \"/home/paseo/.paseo/worktrees/34e3h4uo/witty-duck/\": Is a directory (os error 21)"
+				]
+			}
+		},
+		"review": {
+			"status": "closed",
+			"openedAt": "2026-09-05T12:34:14.108Z",
+			"closedAt": "2026-09-05T12:38:17.377Z",
+			"attempts": 0,
+			"notes": [],
+			"gate": null,
+			"forced": null
+		}
+	},
+	"finish": {
+		"disposition": "ship",
+		"at": "2026-09-05T12:38:17.377Z",
+		"phaseAtFinish": "review"
+	}
+}
