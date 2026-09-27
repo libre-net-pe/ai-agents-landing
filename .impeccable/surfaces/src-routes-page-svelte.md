@@ -16,7 +16,7 @@ related_targets: []
 
 - **Audience:** Peruvian small and medium business owners and e-commerce operators (S/500K–S/10M/year revenue), browsing mostly on phones.
 - **Job:** They lose sales and drown in support outside business hours; they want automation that is affordable, fast to deploy, and doesn't feel foreign.
-- **Primary action:** Direct contact via **WhatsApp** (floating CTA + repeated section CTAs).
+- **Primary action:** Direct contact via **WhatsApp** at **+34 623 43 95 76** — every CTA (floating + in-section) links to `https://wa.me/34623439576` with a preset greeting message (e.g. `?text=¡Buenas! Quiero información sobre los agentes de IA`).
 - **Proof/content:** No real testimonials or case studies exist yet — any social proof must be labeled as placeholder/synthetic. Demonstration material (sample AI chat conversations in Peruvian Spanish) must be authored at full fidelity and labeled synthetic where a visitor could mistake it for real.
 - **Constraints:** Mobile-first; high contrast; simple navigation for non-technical users; claims must not invent prices, customers, or benchmarks (prices shown as "affordable" framing, never fabricated figures).
 

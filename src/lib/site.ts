@@ -4,9 +4,8 @@
 
 export const BRAND = 'Sami';
 
-// TODO(reemplazar antes de publicar): número de WhatsApp real del propietario.
-// El número 51999999999 es un placeholder y debe cambiarse por el definitivo.
-export const WHATSAPP_NUMBER = '51999999999';
+// Número confirmado por el propietario (2026-09): +34 623 43 95 76.
+export const WHATSAPP_NUMBER = '34623439576';
 
 export const WHATSAPP_DEFAULT_TEXT = '¡Buenas! Quiero un agente que atienda mi negocio 24/7.';
 

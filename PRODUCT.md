@@ -46,7 +46,7 @@ Our mechanism: Local market expertise + proven deployment velocity + SMB pricing
 
 - Discovery: Business owner finds us via search, referral, or social
 - Evaluation: Landing page builds trust through familiar language and clear success stories
-- Conversion: Direct WhatsApp contact for personalized conversation
+- Conversion: Direct WhatsApp contact for personalized conversation, at the confirmed business number +34 623 43 95 76 (`wa.me/34623439576`)
 - Onboarding: Quick knowledge transfer, agent training, and deployment
 - Usage: Agent handles sales inquiries and support 24/7 via WhatsApp/web chat
 
@@ -64,6 +64,7 @@ Our mechanism: Local market expertise + proven deployment velocity + SMB pricing
 **Constraints:**
 
 - Company name: **Sami** (generated and user-confirmed 2026-09-05; Quechua for "good fortune/blessing"; warm, short, easy for non-technical owners to say)
+- Contact channel: WhatsApp business number **+34 623 43 95 76** (link target `https://wa.me/34623439576`). Confirmed by the owner; use in all CTAs.
 - No existing visual identity, logo, or brand assets (to be generated)
 - No testimonials, case studies, or proof materials yet (to be fabricated or marked as placeholder)
 - Target market is Peru-specific; expansion to other LatAm markets is undecided
