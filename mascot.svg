@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" role="img" aria-label="Tomato speech-bubble mascot with a smiling face">
+  <!-- Cream background — remove this rect for a transparent version -->
+  <rect width="1024" height="1024" fill="#FBF3E4"/>
+
+  <!-- Tomato-red chat-bubble blob with tail -->
+  <path
+    fill="#E8492A"
+    d="
+      M 676 548
+      C 666 576 688 610 688 642
+      A 28 28 0 0 1 646 666
+      C 618 650 578 653 554 657
+      A 175 175 0 1 1 676 548
+      Z
+    "
+  />
+
+  <!-- Face -->
+  <circle cx="443" cy="470" r="13" fill="#1C3A21"/>
+  <circle cx="583" cy="470" r="13" fill="#1C3A21"/>
+  <path
+    d="M 485 508 Q 512 536 539 508"
+    fill="none"
+    stroke="#1C3A21"
+    stroke-width="14"
+    stroke-linecap="round"
+  />
+
+  <!-- Lime accent dot -->
+  <circle cx="675" cy="368" r="15" fill="#B4CC2E"/>
+</svg>
