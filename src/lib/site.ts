@@ -4,6 +4,9 @@
 
 export const BRAND = 'Sami';
 
+// Origen canónico del sitio (se sirve en la raíz del dominio, ver CNAME).
+export const SITE_URL = 'https://chatbot.libre.net.pe';
+
 // Número confirmado por el propietario (2026-09): +34 623 43 95 76.
 export const WHATSAPP_NUMBER = '34623439576';
 

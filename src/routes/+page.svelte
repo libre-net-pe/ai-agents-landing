@@ -4,7 +4,7 @@
 	import WhatsAppButton from '$lib/components/WhatsAppButton.svelte';
 	import WhatsAppIcon from '$lib/components/WhatsAppIcon.svelte';
 	import { reveal } from '$lib/actions/reveal';
-	import { BRAND, waUrl } from '$lib/site';
+	import { BRAND, SITE_URL, waUrl } from '$lib/site';
 
 	type Chip = { text: string; tone: 'lima' | 'mar' | 'aji' };
 	type MenuItem = { name: string; chip: Chip };
@@ -145,6 +145,33 @@
 			text: 'Perfecto 🙌 Le mando el detalle y el total por aquí mismo. ¡Gracias por su preferencia!'
 		}
 	];
+
+	// Descripción canónica del sitio: la misma copia del <meta name="description"> de abajo.
+	const SITE_DESCRIPTION =
+		'Sami crea agentes de inteligencia artificial que toman pedidos, responden preguntas y venden por WhatsApp las 24 horas. En español peruano, de precio PYME y listos en días.';
+
+	const OG_IMAGE_URL = `${SITE_URL}/og-image.png`;
+
+	// Datos estructurados (schema.org): solo hechos verificables — nombre, url, descripción.
+	const jsonLd = {
+		'@context': 'https://schema.org',
+		'@graph': [
+			{
+				'@type': 'Organization',
+				name: BRAND,
+				url: SITE_URL,
+				logo: OG_IMAGE_URL,
+				description: SITE_DESCRIPTION
+			},
+			{
+				'@type': 'WebSite',
+				name: BRAND,
+				url: SITE_URL,
+				inLanguage: 'es-PE',
+				description: SITE_DESCRIPTION
+			}
+		]
+	};
 </script>
 
 <svelte:head>
@@ -159,6 +186,25 @@
 		content="Agentes con IA que toman pedidos, responden y venden por WhatsApp. En español peruano, de precio PYME, listos en días."
 	/>
 	<meta property="og:type" content="website" />
+	<link rel="canonical" href={SITE_URL} />
+	<meta property="og:url" content={SITE_URL} />
+	<meta property="og:site_name" content={BRAND} />
+	<meta property="og:locale" content="es_PE" />
+	<meta property="og:image" content={OG_IMAGE_URL} />
+	<meta property="og:image:width" content="1200" />
+	<meta property="og:image:height" content="630" />
+	<meta property="og:image:alt" content="Sami — Tu negocio, atendido 24/7" />
+	<meta name="twitter:card" content="summary_large_image" />
+	<meta name="twitter:title" content="Sami — Tu negocio, atendido 24/7" />
+	<meta
+		name="twitter:description"
+		content="Agentes con IA que toman pedidos, responden y venden por WhatsApp. En español peruano, de precio PYME, listos en días."
+	/>
+	<meta name="twitter:image" content={OG_IMAGE_URL} />
+	<!-- Datos estructurados para buscadores; svelte:element evita el tratamiento de <script> embebido. -->
+	<svelte:element this={"script"} type="application/ld+json">
+		{JSON.stringify(jsonLd)}
+	</svelte:element>
 </svelte:head>
 
 <a
