@@ -108,7 +108,7 @@ ctx.restore();
 ctx.textBaseline = 'alphabetic';
 
 // ---------- bajada ----------
-const SUB = 'Agentes con IA que toman pedidos y venden por WhatsApp.';
+const SUB = 'Chatbot de WhatsApp con IA que atiende y vende por ti.';
 fitFont(SUB, 'Hanken Grotesk', 34, 900, 'Medium');
 ctx.fillStyle = CARBON;
 ctx.fillText(SUB, MX, 474);

@@ -211,7 +211,7 @@ Esquinas vivas pero moderadas: chips 8px, tarjetas y chat 16px, burbujas 14px co
 - **Do** usar Passion One 700 en titulares con clamp y nunca pasar de 6rem.
 - **Do** Alternar chips lima→mar→ají en cada lista de carta para el ritmo de bloque de color.
 - **Do** Escribir todo el copy en español peruano de Lima; los CTA siempre con verbo de pedido ("Pide", "Escríbenos").
-- **Do** Etiquetar toda conversación o testimonio sintético con chip visible ("Conversación de demostración", "Ejemplo — aquí irán los testimonios reales").
+- **Do** Etiquetar toda conversación sintética con chip visible ("Conversación de demostración").
 
 ### Don't:
 

@@ -4,7 +4,17 @@
 	import WhatsAppButton from '$lib/components/WhatsAppButton.svelte';
 	import WhatsAppIcon from '$lib/components/WhatsAppIcon.svelte';
 	import { reveal } from '$lib/actions/reveal';
-	import { BRAND, SITE_URL, waUrl } from '$lib/site';
+	import {
+		BRAND,
+		CANONICAL_URL,
+		LOGO_URL,
+		OG_IMAGE_URL,
+		SITE_DESCRIPTION,
+		SITE_TITLE,
+		SITE_URL,
+		WHATSAPP_E164,
+		waUrl
+	} from '$lib/site';
 
 	type Chip = { text: string; tone: 'lima' | 'mar' | 'aji' };
 	type MenuItem = { name: string; chip: Chip };
@@ -121,6 +131,14 @@
 		{
 			q: '¿Y si yo quiero atender yo mismo?',
 			a: 'Le avisas y te pasa la conversación al toque. La máquina atiende, tú decides.'
+		},
+		{
+			q: '¿Es un chatbot o un agente de IA?',
+			a: 'Las dos cosas: es un chatbot de WhatsApp entrenado con la información de tu negocio y actúa como asistente virtual. Responde al instante y, cuando la conversación lo pide, la pasa a tu equipo.'
+		},
+		{
+			q: '¿Sirve para vender y para atención al cliente?',
+			a: 'Para las dos. Contesta precios, horarios y dudas, toma el pedido y cierra la venta por WhatsApp. Cuando alguien está listo para comprar, te lo pasa con todo el contexto.'
 		}
 	];
 
@@ -146,60 +164,101 @@
 		}
 	];
 
-	// Descripción canónica del sitio: la misma copia del <meta name="description"> de abajo.
-	const SITE_DESCRIPTION =
-		'Sami crea agentes de inteligencia artificial que toman pedidos, responden preguntas y venden por WhatsApp las 24 horas. En español peruano, de precio PYME y listos en días.';
+	const ORGANIZATION_ID = `${SITE_URL}/#organization`;
+	const WEBSITE_ID = `${SITE_URL}/#website`;
 
-	const OG_IMAGE_URL = `${SITE_URL}/og-image.png`;
-
-	// Datos estructurados (schema.org): solo hechos verificables — nombre, url, descripción.
+	// Datos estructurados (schema.org): solo hechos verificables del sitio — nombre, url,
+	// teléfono de contacto, ciudad/país y el servicio que se vende. Sin precios ni reseñas.
 	const jsonLd = {
 		'@context': 'https://schema.org',
 		'@graph': [
 			{
 				'@type': 'Organization',
+				'@id': ORGANIZATION_ID,
 				name: BRAND,
-				url: SITE_URL,
-				logo: OG_IMAGE_URL,
-				description: SITE_DESCRIPTION
+				url: CANONICAL_URL,
+				logo: {
+					'@type': 'ImageObject',
+					url: LOGO_URL,
+					width: 512,
+					height: 512,
+					caption: BRAND
+				},
+				image: OG_IMAGE_URL,
+				description: SITE_DESCRIPTION,
+				telephone: WHATSAPP_E164,
+				address: {
+					'@type': 'PostalAddress',
+					addressLocality: 'Lima',
+					addressCountry: 'PE'
+				},
+				areaServed: { '@type': 'Country', name: 'Perú' },
+				contactPoint: {
+					'@type': 'ContactPoint',
+					telephone: WHATSAPP_E164,
+					contactType: 'sales',
+					areaServed: 'PE',
+					availableLanguage: ['es-PE']
+				}
 			},
 			{
 				'@type': 'WebSite',
+				'@id': WEBSITE_ID,
 				name: BRAND,
-				url: SITE_URL,
+				url: CANONICAL_URL,
 				inLanguage: 'es-PE',
-				description: SITE_DESCRIPTION
+				description: SITE_DESCRIPTION,
+				publisher: { '@id': ORGANIZATION_ID }
+			},
+			{
+				'@type': 'Service',
+				'@id': `${SITE_URL}/#servicio`,
+				name: 'Chatbots y agentes de IA para WhatsApp',
+				serviceType: 'Chatbot de WhatsApp con inteligencia artificial',
+				description:
+					'Automatización de la atención al cliente y de las ventas por WhatsApp: responde precios y horarios, toma pedidos y reservas, y escala la conversación a tu equipo cuando hace falta.',
+				provider: { '@id': ORGANIZATION_ID },
+				areaServed: [
+					{ '@type': 'Country', name: 'Perú' },
+					{ '@type': 'City', name: 'Lima' }
+				],
+				audience: { '@type': 'BusinessAudience', audienceType: 'PYMEs y negocios peruanos' }
+			},
+			{
+				'@type': 'FAQPage',
+				'@id': `${SITE_URL}/#faq`,
+				mainEntity: faqs.map((faq) => ({
+					'@type': 'Question',
+					name: faq.q,
+					acceptedAnswer: { '@type': 'Answer', text: faq.a }
+				}))
 			}
 		]
 	};
 </script>
 
 <svelte:head>
-	<title>Sami — Agentes con IA que atienden 24/7 por WhatsApp · Lima, Perú</title>
-	<meta
-		name="description"
-		content="Sami crea agentes de inteligencia artificial que toman pedidos, responden preguntas y venden por WhatsApp las 24 horas. En español peruano, de precio PYME y listos en días."
-	/>
-	<meta property="og:title" content="Sami — Tu negocio, atendido 24/7" />
-	<meta
-		property="og:description"
-		content="Agentes con IA que toman pedidos, responden y venden por WhatsApp. En español peruano, de precio PYME, listos en días."
-	/>
+	<title>{SITE_TITLE}</title>
+	<meta name="description" content={SITE_DESCRIPTION} />
+	<meta name="theme-color" content="#fffdf8" />
+	<link rel="canonical" href={CANONICAL_URL} />
 	<meta property="og:type" content="website" />
-	<link rel="canonical" href={SITE_URL} />
-	<meta property="og:url" content={SITE_URL} />
+	<meta property="og:url" content={CANONICAL_URL} />
 	<meta property="og:site_name" content={BRAND} />
 	<meta property="og:locale" content="es_PE" />
+	<meta property="og:title" content={SITE_TITLE} />
+	<meta property="og:description" content={SITE_DESCRIPTION} />
 	<meta property="og:image" content={OG_IMAGE_URL} />
+	<meta property="og:image:type" content="image/png" />
 	<meta property="og:image:width" content="1200" />
 	<meta property="og:image:height" content="630" />
-	<meta property="og:image:alt" content="Sami — Tu negocio, atendido 24/7" />
-	<meta name="twitter:card" content="summary_large_image" />
-	<meta name="twitter:title" content="Sami — Tu negocio, atendido 24/7" />
 	<meta
-		name="twitter:description"
-		content="Agentes con IA que toman pedidos, responden y venden por WhatsApp. En español peruano, de precio PYME, listos en días."
+		property="og:image:alt"
+		content="Aviso de Sami: Tu negocio, atendido 24/7 por un chatbot de WhatsApp con IA"
 	/>
+	<meta name="twitter:card" content="summary_large_image" />
+	<meta name="twitter:title" content={SITE_TITLE} />
+	<meta name="twitter:description" content={SITE_DESCRIPTION} />
 	<meta name="twitter:image" content={OG_IMAGE_URL} />
 	<!-- Datos estructurados para buscadores; svelte:element evita el tratamiento de <script> embebido. -->
 	<svelte:element this={"script"} type="application/ld+json">
@@ -239,8 +298,8 @@
 				<mark class="inline-block -rotate-1 rounded-md bg-lima px-3 text-aji">24/7</mark>
 			</h1>
 			<p class="mt-6 max-w-[62ch] text-lg text-carbon md:text-xl">
-				{BRAND} es un agente con inteligencia artificial que toma los pedidos, responde preguntas y vende
-				por WhatsApp mientras tú estás en otra cosa. En español peruano, como debe ser.
+				{BRAND} es un chatbot de WhatsApp con inteligencia artificial: toma los pedidos, responde precios
+				y vende por ti mientras tú estás en otra cosa. Atención al cliente 24/7, en español peruano.
 			</p>
 
 			<ul class="mt-10 space-y-4" use:reveal>
@@ -431,7 +490,7 @@
 						id="rubros-title"
 						class="font-display text-[clamp(2.6rem,6vw,4rem)] leading-tight font-bold text-aji"
 					>
-						Para negocios como el tuyo
+						Chatbot de WhatsApp para negocios como el tuyo
 					</h2>
 					<p class="mt-2 max-w-[60ch] text-lg text-carbon/85">
 						Si tu cliente te escribe por WhatsApp, {BRAND} le responde.
@@ -447,14 +506,19 @@
 						</li>
 					{/each}
 				</ul>
+
+				<p class="mt-6 max-w-[60ch] text-carbon/85" use:reveal={{ delay: 150 }}>
+					Se conecta al WhatsApp que ya usas, sin cambiar de número ni pedirle a tus clientes que
+					instalen nada.
+				</p>
 			</div>
 
 			<div class="mx-auto mt-16 max-w-2xl">
 				<div use:reveal>
 					<h3 class="font-display text-3xl font-bold text-mar">Precio claro, de una</h3>
 					<p class="mt-2 max-w-[60ch] text-carbon/85">
-						Hablando en platos: precios sin salsas. De precio PYME y con cotización por WhatsApp en
-						minutos.
+						Hablando en platos: precios sin salsas. De precio PYME, sin proyectos de automatización
+						de seis meses, y con cotización por WhatsApp en minutos.
 					</p>
 					<div class="mt-6 flex flex-wrap gap-x-5 gap-y-3">
 						{#each precios as precio, i (precio.text)}
@@ -473,24 +537,6 @@
 						/>
 					</div>
 				</div>
-
-				<!-- Testimonio de ejemplo, visiblemente sintético -->
-				<figure
-					class="mt-12 rounded-xl border-2 border-dashed border-carbon/30 bg-plate/60 p-6"
-					use:reveal
-				>
-					<figcaption class="mb-3">
-						<span class="chip bg-carbon/10 text-carbon"
-							>Ejemplo — aquí irán los testimonios reales</span
-						>
-					</figcaption>
-					<blockquote class="text-lg text-carbon/85 italic">
-						“Desde que {BRAND} atiende la noche, ya no pierdo ni un pedido.”
-					</blockquote>
-					<p class="mt-2 text-sm font-bold text-carbon/60">
-						Nombre de ejemplo · Negocio de ejemplo, Lima
-					</p>
-				</figure>
 			</div>
 		</div>
 	</section>
@@ -563,7 +609,8 @@
 					<span class="size-2 rounded-full bg-lima" aria-hidden="true"></span>
 				</p>
 				<p class="mt-1 max-w-[46ch] text-sm text-plate/70">
-					Agentes con IA que atienden 24/7 por WhatsApp. Para negocios peruanos, en español peruano.
+					Agentes con IA que atienden 24/7 por WhatsApp. Para negocios y empresas peruanas, en
+					español peruano.
 				</p>
 			</div>
 			<nav class="flex flex-wrap gap-x-6 gap-y-2 text-sm font-bold" aria-label="Pie de página">
