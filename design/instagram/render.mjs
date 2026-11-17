@@ -25,7 +25,8 @@ const CARBON = '#2b2622';
 const WSP = '#0b7a3e';
 const LIMA = '#a9cc4e';
 
-const W = 1080, H = 1350;
+const W = 1080,
+	H = 1350;
 const S = W / 960; // diseño pensado en 960×1200
 
 // Glifo WhatsApp (Simple Icons, CC0)
@@ -129,25 +130,43 @@ async function render(src, out, draw) {
 // ---------- 1. Tu negocio, atendido 24/7 ----------
 await render('source-1.png', 'post-1-tu-negocio.png', (ctx) => {
 	let y = drawMultiline(ctx, ['Tu negocio,', 'atendido 24/7'], 64, 170, {
-		family: 'Passion One', size: 118, color: AJI, weight: '700', lineHeight: 0.95,
+		family: 'Passion One',
+		size: 118,
+		color: AJI,
+		weight: '700',
+		lineHeight: 0.95
 	});
-	drawHand(ctx, [
-		[{ text: 'Conoce a ' }, { text: 'Sami', bold: true }, { text: ':' }],
-		[{ text: 'tu agente por WhatsApp.' }],
-	], 68, y + 92, { size: 54, color: CARBON, rotate: -1.5 });
+	drawHand(
+		ctx,
+		[
+			[{ text: 'Conoce a ' }, { text: 'Sami', bold: true }, { text: ':' }],
+			[{ text: 'tu agente por WhatsApp.' }]
+		],
+		68,
+		y + 92,
+		{ size: 54, color: CARBON, rotate: -1.5 }
+	);
 });
 
 // ---------- 2. ¿Te escriben cuando no puedes responder? ----------
 await render('source-2.png', 'post-2-te-escriben.png', (ctx) => {
 	drawMultiline(ctx, ['¿Te escriben', 'cuando no puedes', 'responder?'], 64, 150, {
-		family: 'Passion One', size: 104, color: CARBON, weight: '700', lineHeight: 0.95,
+		family: 'Passion One',
+		size: 104,
+		color: CARBON,
+		weight: '700',
+		lineHeight: 0.95
 	});
 });
 
 // ---------- 3. Menos chats pendientes. Más ventas. ----------
 await render('source-3.png', 'post-3-mas-ventas.png', (ctx) => {
 	let y = drawMultiline(ctx, ['Menos chats', 'pendientes.', 'Más ventas.'], 56, 430, {
-		family: 'Passion One', size: 94, color: AJI, weight: '700', lineHeight: 0.95,
+		family: 'Passion One',
+		size: 94,
+		color: AJI,
+		weight: '700',
+		lineHeight: 0.95
 	});
 	drawCta(ctx, 56, y + 130, 'Pide tu Sami por WhatsApp');
 });
