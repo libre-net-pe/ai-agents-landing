@@ -1,0 +1,339 @@
+#!/bin/sh
+# file-size-guard — pre-commit hook for every child repo in repos.yml.
+#
+# Versioned at .githooks/pre-commit in each child repo and enabled per clone
+# with `git config core.hooksPath .githooks`. The canonical source and the
+# installer that keeps every clone in sync live in the factory repo (sami-cmd:
+# scripts/hooks/pre-commit, scripts/install-git-hooks.sh); this file is a
+# verbatim copy, so change the canonical source and re-run the installer rather
+# than editing an installed copy.
+#
+# What it blocks: a staged, agent-authored file whose committed content exceeds
+#   5,000 tokens. Tokens are estimated as bytes / 4, so the budget is
+#   5,000 * 4 = 20,000 bytes of blob content per file.
+#
+# Scope
+#   - staged added/copied/modified/renamed files only (`--diff-filter=ACMR`);
+#     unstaged work and untracked files are never inspected
+#   - the size measured is the staged blob (`git cat-file -s :<path>`) — the
+#     bytes this commit will actually contain, not what sits in the worktree
+#   - skipped: symlinks, submodules, and binary blobs (a NUL byte in the first
+#     8 KiB)
+#   - skipped: files no agent hand-authored — lockfiles, vendored deps, build
+#     output, codegen, minified bundles, source maps, snapshots, media, data
+#     dumps (list below)
+#   - skipped: anything matching <repo-root>/.file-size-ignore, one
+#     gitignore-style glob per line, `#` starts a comment, `dir/` expands to
+#     `dir/*`. That file is per-repo and versioned with the repo, so a repo can
+#     exempt its own generated paths without editing this hook.
+#
+# Ratchet, not a wall: a file that is ALREADY over budget at HEAD may be
+# committed as long as this commit does not make it bigger. The budget applies
+# in full to new files and to every file that is still inside it. Splitting
+# such a file is therefore forced the next time it is touched, but an
+# unrelated one-line fix is never held hostage by a pre-existing monster.
+#
+# Bypass a single commit with `git commit --no-verify`; say why in the message.
+# Do not add a hook-path override to git config to silence this.
+
+set -u
+
+LIMIT_TOKENS=5000
+BYTES_PER_TOKEN=4
+LIMIT_BYTES=$((LIMIT_TOKENS * BYTES_PER_TOKEN))
+WARN_BYTES=$((LIMIT_BYTES * 4 / 5))
+BINARY_PROBE=8192
+CR=$(printf '\r')
+
+# ---------------------------------------------------------------------------
+# Built-in exemptions. Only add a pattern here if the content is written by a
+# tool or a dependency, not by an agent typing code.
+# ---------------------------------------------------------------------------
+BUILTIN_IGNORE='
+# lockfiles — resolved dependency graphs, machine-written
+package-lock.json
+npm-shrinkwrap.json
+yarn.lock
+pnpm-lock.yaml
+bun.lock
+bun.lockb
+Cargo.lock
+go.sum
+Gemfile.lock
+Pipfile.lock
+poetry.lock
+pdm.lock
+uv.lock
+composer.lock
+skills-lock.json
+.terraform.lock.hcl
+gradle.lockfile
+*.lock
+*.lockb
+*.lockfile
+# vendored dependencies and tool caches
+node_modules/
+vendor/
+third_party/
+Pods/
+.bundle/
+.gradle/
+.yarn/
+# build output — reproducible from source
+dist/
+build/
+out/
+target/
+.next/
+.nuxt/
+.svelte-kit/
+coverage/
+public/build/
+# codegen — regenerate, never hand-edit
+generated/
+gen/
+__snapshots__/
+*.generated.*
+*.g.dart
+*.freezed.dart
+*.pb.go
+*.pb.ts
+*.pb.cc
+*.pb.h
+*_pb2.py
+*.min.js
+*.min.css
+*.map
+*.snap
+# binaries and media — not text an agent splits
+*.png
+*.jpg
+*.jpeg
+*.gif
+*.webp
+*.ico
+*.bmp
+*.pdf
+*.zip
+*.gz
+*.tar
+*.jar
+*.so
+*.dylib
+*.dll
+*.exe
+*.bin
+*.woff
+*.woff2
+*.ttf
+*.otf
+*.mp3
+*.mp4
+*.webm
+*.wav
+*.apk
+*.aab
+*.jks
+*.keystore
+*.pen
+# data dumps — indivisible by nature, splitting them corrupts them
+*.csv
+*.tsv
+*.jsonl
+*.ndjson
+*.parquet
+'
+
+trim() {
+  _t=$1
+  _t=${_t#"${_t%%[![:space:]]*}"}
+  _t=${_t%"${_t##*[![:space:]]}"}
+  printf '%s' "$_t"
+}
+
+# match_list <path> — read patterns from stdin, return 0 on the first match.
+match_list() {
+  _mpath=$1
+  while IFS= read -r _mline; do
+    _mline=${_mline%"$CR"}
+    _mpat=$(trim "${_mline%%#*}")
+    [ -n "$_mpat" ] || continue
+    case "$_mpat" in
+      */) _mpat="$_mpat*" ;;
+    esac
+    case "$_mpath" in
+      $_mpat|*/$_mpat) return 0 ;;
+    esac
+  done
+  return 1
+}
+
+is_ignored() {
+  printf '%s\n' "$BUILTIN_IGNORE" | match_list "$1" && return 0
+  if [ -f "$ignore_file" ]; then
+    match_list "$1" < "$ignore_file" && return 0
+  fi
+  return 1
+}
+
+# ---------------------------------------------------------------------------
+
+root=$(git rev-parse --show-toplevel 2>/dev/null) || exit 0
+[ -n "$root" ] || exit 0
+cd "$root" 2>/dev/null || exit 0
+ignore_file="$root/.file-size-ignore"
+
+# Nothing staged (or --allow-empty): nothing to police.
+git diff --cached --quiet 2>/dev/null && exit 0
+
+tmp="${TMPDIR:-/tmp}/file-size-guard.$$"
+mkdir -p "$tmp" 2>/dev/null || exit 0
+trap 'rm -rf "$tmp"' EXIT HUP INT TERM
+
+git -c core.quotePath=false diff --cached --name-only --diff-filter=ACMR \
+  > "$tmp/staged" 2>/dev/null || exit 0
+
+: > "$tmp/bad"
+: > "$tmp/warn"
+bad=0
+warned=0
+
+while IFS= read -r path; do
+  [ -n "$path" ] || continue
+  # Exotic (quoted) names: cannot be addressed safely; leave them alone.
+  case "$path" in '"'*) continue ;; esac
+
+  is_ignored "$path" && continue
+
+  mode=$(git ls-files -s -- "$path" 2>/dev/null | head -n 1 | cut -d' ' -f1)
+  case "$mode" in 120000|160000) continue ;; esac
+
+  size=$(git cat-file -s ":$path" 2>/dev/null) || continue
+  case "$size" in ''|*[!0-9]*) continue ;; esac
+  [ "$size" -gt "$WARN_BYTES" ] || continue
+
+  # Binary blobs are not split by hand; a NUL byte in the first 8 KiB decides.
+  git cat-file -p ":$path" 2>/dev/null | head -c "$BINARY_PROBE" > "$tmp/probe"
+  probe=$(wc -c < "$tmp/probe" | awk '{print $1}')
+  text=$(LC_ALL=C tr -d '\000' < "$tmp/probe" | wc -c | awk '{print $1}')
+  [ "$probe" = "$text" ] || continue
+
+  tokens=$(( (size + BYTES_PER_TOKEN - 1) / BYTES_PER_TOKEN ))
+
+  head_size=$(git cat-file -s "HEAD:$path" 2>/dev/null) || head_size=0
+  case "$head_size" in ''|*[!0-9]*) head_size=0 ;; esac
+
+  if [ "$size" -le "$LIMIT_BYTES" ]; then
+    {
+      printf '%s\n' "$path"
+      printf '%s\n' "$size"
+      printf '%s\n' "$tokens"
+      printf '%s\n' "$head_size"
+    } >> "$tmp/warn"
+    warned=$((warned + 1))
+  elif [ "$head_size" -gt "$LIMIT_BYTES" ] && [ "$size" -le "$head_size" ]; then
+    # Ratchet: already oversized at HEAD, this commit does not grow it.
+    {
+      printf '%s\n' "$path"
+      printf '%s\n' "$size"
+      printf '%s\n' "$tokens"
+      printf '%s\n' "$head_size"
+    } >> "$tmp/warn"
+    warned=$((warned + 1))
+  else
+    {
+      printf '%s\n' "$path"
+      printf '%s\n' "$size"
+      printf '%s\n' "$tokens"
+      printf '%s\n' "$head_size"
+    } >> "$tmp/bad"
+    bad=$((bad + 1))
+  fi
+done < "$tmp/staged"
+
+if [ "$warned" -eq 0 ] && [ "$bad" -eq 0 ]; then
+  exit 0
+fi
+
+if [ "$warned" -gt 0 ]; then
+  printf '\nfile-size-guard: note - %s staged file(s) are large but allowed:\n' "$warned" >&2
+  {
+    while read -r w_path && read -r w_size && read -r w_tokens && read -r w_head; do
+      if [ "$w_size" -le "$LIMIT_BYTES" ]; then
+        printf '  %s - %s bytes = %s tokens (%s%% of the %s-byte budget)\n' \
+          "$w_path" "$w_size" "$w_tokens" $((w_size * 100 / LIMIT_BYTES)) "$LIMIT_BYTES"
+      else
+        printf '  %s - already %s bytes at HEAD, now %s bytes = %s tokens; over budget but shrinking, so allowed\n' \
+          "$w_path" "$w_head" "$w_size" "$w_tokens"
+      fi
+    done < "$tmp/warn"
+  } >&2
+fi
+
+[ "$bad" -gt 0 ] || exit 0
+
+printf '\nfile-size-guard: BLOCKED - %s staged file(s) exceed the %s-token budget\n\n' "$bad" "$LIMIT_TOKENS" >&2
+printf '  budget   %s tokens x %s bytes/token = %s bytes per file\n' \
+  "$LIMIT_TOKENS" "$BYTES_PER_TOKEN" "$LIMIT_BYTES" >&2
+printf '  measured the staged blob (what this commit will contain), not the worktree\n\n' >&2
+
+{
+  while read -r b_path && read -r b_size && read -r b_tokens && read -r b_head; do
+    over=$((b_size - LIMIT_BYTES))
+    over_tokens=$((over / BYTES_PER_TOKEN))
+    printf '  %s\n' "$b_path"
+    printf '    %s bytes = %s tokens, %s bytes (~%s tokens) over budget\n' \
+      "$b_size" "$b_tokens" "$over" "$over_tokens"
+    if [ "$b_head" -gt "$LIMIT_BYTES" ]; then
+      printf '    already %s bytes at HEAD: it may shrink, it may not grow - split it in this commit\n' "$b_head"
+    fi
+  done < "$tmp/bad"
+} >&2
+
+cat >&2 <<EOF
+
+Split the file. This is a scope problem, not a formatting problem: the budget is
+${LIMIT_BYTES} bytes (~600 lines) and one file should be one cohesive unit.
+
+  1. Types first. Structs, enums, interfaces, DTOs, constants and schemas move
+     out with zero behaviour change (src/<feature>/types.rs, src/types/<feature>.ts,
+     .../model/). Cheapest split; do it before touching logic.
+  2. Split by responsibility, not by line count. Group the functions that change
+     for the same reason - persistence, validation, formatting, transport - into
+     their own module, then re-export from the parent (\`pub use\`,
+     \`export * from './x'\`, \`exports\`) so existing imports at call sites keep
+     working and this commit stays a pure move.
+  3. One file per case. A file that is a long match/switch, a route table or a
+     handler registry becomes one module per case plus a small index that
+     registers them; the index stays under budget and each case sits next to
+     its tests.
+  4. Move the tests with the unit. Rust: src/<unit>/mod.rs + src/<unit>/tests.rs
+     (or tests/<unit>.rs); TS/Svelte: <unit>.test.ts beside <unit>.ts; Kotlin:
+     <Unit>Test.kt. A 900-line test file is usually several units glued together.
+  5. Long inline fixtures are files, not literals. Move expected JSON/SQL/
+     payload strings to tests/fixtures/<unit>/ and load them.
+  6. Still over budget after 1-5? The file is doing two jobs. Separate the jobs,
+     or move the generic helper into a shared lib module that both import.
+
+Do not "solve" this by deleting tests, stripping comments, joining lines, or
+cutting the file at an arbitrary line: a file split mid-function is worse than
+a large one, and the budget exists to keep files reviewable, not to be gamed.
+
+Then \`git add\` the split files and commit again; every committed file must be
+under ${LIMIT_BYTES} bytes.
+
+Files a tool or a dependency wrote - lockfiles, vendor trees, build output,
+codegen, minified bundles, source maps, snapshots, media, data dumps - are
+skipped automatically. If your file belongs to that group, add its glob to
+.file-size-ignore at the repo root (one gitignore-style pattern per line, '#'
+comments) and commit that file with the change. Last resort for one commit
+only: \`git commit --no-verify\`, with the reason in the commit message.
+
+This hook ships in this repo at .githooks/pre-commit and is enabled with
+\`git config core.hooksPath .githooks\` (the factory's installer does it for
+every clone). Details and the canonical source: scripts/hooks/pre-commit and
+scripts/install-git-hooks.sh in the factory repo (sami-cmd). Do not patch this
+copy: change the canonical source there and re-run the installer.
+EOF
+
+exit 1
