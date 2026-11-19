@@ -7,3 +7,7 @@ bun.lockb
 
 # Miscellaneous
 /static/
+
+# Git hooks copied verbatim from the factory repo (sami-cmd) — shared
+# tooling, must stay byte-identical, so it is never reformatted here
+/.githooks/
